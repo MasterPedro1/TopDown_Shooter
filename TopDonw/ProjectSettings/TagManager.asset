@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Balas
   - Misil
+  - Enemy
   - balasenemigo
   layers:
   - Default
@@ -14,9 +15,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Enemy
+  - balasenemigo
+  - Suelo
   - 
   - 
   - 

@@ -1,53 +1,31 @@
 using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class WaveManager : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public Transform[] spawnPoints;
-    public int baseEnemiesPerWave = 1; // Enemigos iniciales por oleada
-    public float timeBetweenWaves = 5f;
-    private int waveIndex = 1;
-    private int enemiesAlive = 0;
-    private int currentEnemiesInWave; // Número actual de enemigos en esta oleada
+    public int enemiesPerWave = 5;
+    public float timeBetweenWaves = 5f; // Tiempo entre oleadas
+    private int waveIndex = 1; // Índice de la oleada actual
+    private int enemiesAlive = 0; // Contador de enemigos vivos
+
+    public TextMeshProUGUI waveText; // Referencia al texto de la oleada
 
     void Start()
     {
-        // Iniciar la primera oleada de inmediato
+        waveText.text = "Wave: " + waveIndex; // Mostrar el número de la primera oleada
         StartCoroutine(SpawnWave());
     }
 
     IEnumerator SpawnWave()
     {
-        while (true)
+        // Generar enemigos
+        for (int i = 0; i < enemiesPerWave; i++)
         {
-            // Esperar un tiempo entre oleadas si no es la primera oleada
-            if (waveIndex > 1)
-            {
-                yield return new WaitForSeconds(timeBetweenWaves);
-            }
-
-            Debug.Log($"Iniciando oleada {waveIndex}");
-
-            // Calcular el número de enemigos para la oleada actual
-            currentEnemiesInWave = baseEnemiesPerWave + waveIndex - 1;
-            enemiesAlive = currentEnemiesInWave;
-
-            // Generar enemigos
-            for (int i = 0; i < currentEnemiesInWave; i++)
-            {
-                SpawnEnemy();
-                yield return new WaitForSeconds(1f); // Espacio entre la generación de enemigos
-            }
-
-            // Esperar a que todos los enemigos sean eliminados antes de iniciar la próxima oleada
-            while (enemiesAlive > 0)
-            {
-                yield return null;
-            }
-
-            Debug.Log($"Oleada {waveIndex} completada.");
-            waveIndex++; // Incrementar la oleada
+            SpawnEnemy();
+            yield return new WaitForSeconds(1f); // Espacio entre la generación de enemigos
         }
     }
 
@@ -55,17 +33,32 @@ public class WaveManager : MonoBehaviour
     {
         int spawnIndex = Random.Range(0, spawnPoints.Length);
         Instantiate(enemyPrefab, spawnPoints[spawnIndex].position, Quaternion.identity);
+        enemiesAlive++;
     }
 
-    // Este método se llama cuando un enemigo muere
+    // Este método se llamará cuando un enemigo muera
     public void EnemyKilled()
     {
         enemiesAlive--;
 
-        // La oleada se considera completada cuando no quedan enemigos vivos
-        if (enemiesAlive <= 0)
+        // Cuando no quedan más enemigos vivos, la oleada ha terminado
+        if (enemiesAlive == 0)
         {
-            Debug.Log("Todos los enemigos han sido eliminados.");
+            Debug.Log("Oleada completada. Esperando 4 segundos para la siguiente oleada.");
+            StartCoroutine(WaitAndStartNextWave());
         }
     }
+
+    IEnumerator WaitAndStartNextWave()
+    {
+        yield return new WaitForSeconds(4f); // Esperar 4 segundos antes de comenzar la nueva oleada
+
+        // Incrementar el número de enemigos para la próxima oleada
+        enemiesPerWave += waveIndex;
+        waveIndex++; // Avanzar a la siguiente oleada
+
+        waveText.text = "Wave: " + waveIndex; // Actualizar el texto de la oleada
+        StartCoroutine(SpawnWave()); // Comenzar la nueva oleada
+    }
 }
+

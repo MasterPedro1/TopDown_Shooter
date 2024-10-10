@@ -29,5 +29,6 @@ public class PlayerController : MonoBehaviour
         Vector3 lookDir = mousePos - transform.position;
         lookDir.y = 0; // Mantener el eje Y constante
         transform.forward = lookDir;
+
     }
 }

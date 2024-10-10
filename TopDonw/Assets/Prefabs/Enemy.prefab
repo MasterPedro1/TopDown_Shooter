@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7287019470460768411}
   - component: {fileID: 2160335890011250682}
   - component: {fileID: 2875850654184386816}
-  m_Layer: 4
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,9 +119,9 @@ GameObject:
   - component: {fileID: 5932345460654788330}
   - component: {fileID: 200905473604136776}
   - component: {fileID: 8530935950631707828}
-  m_Layer: 4
+  m_Layer: 6
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -260,3 +260,4 @@ MonoBehaviour:
   moveSpeed: 3
   stopDistance: 10
   bulletSpeed: 20
+  minDistanceFromOtherEnemies: 2

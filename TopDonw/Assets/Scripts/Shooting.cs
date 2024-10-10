@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Shooting : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Shooting : MonoBehaviour
     public float missileSpeed = 15f;
     public int maxMissiles = 2;
     private int currentMissiles;
+    public TextMeshProUGUI misiles;
 
     void Start()
     {
@@ -32,6 +34,7 @@ public class Shooting : MonoBehaviour
             currentMissiles--;
             Debug.Log(currentMissiles);
         }
+        misiles.text = "Misiles: " + currentMissiles.ToString();
     }
 
     void ShootBullet()
